@@ -10,10 +10,11 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var items = ["item1","item2", "item3"]
+    var items: [String]!
 
     @IBAction func addItem(_ sender: Any) {
         items.append("item4")
+        UserDefaults.standard.set(items, forKey: "todoArray")
         tableView.reloadData()
     }
     @IBOutlet weak var tableView: UITableView!
@@ -22,11 +23,19 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         tableView.delegate = self
         tableView.dataSource = self
+        
+
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        UserDefaults.standard.register(defaults: ["todoArray": []])
+        items = UserDefaults.standard.array(forKey: "todoArray") as! [String]
+        
     }
 
 
