@@ -65,6 +65,24 @@ extension ViewController: UITableViewDelegate {
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let alert = UIAlertController(title: "Edit Todo", message: "Todoを編集してください", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Edit", style: .default) { [weak self] _ -> Void in
+            self?.items[indexPath.row] = (alert.textFields![0] as! UITextField).text!
+            tableView.reloadData()
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ -> Void in
+        }
+        alert.addAction(cancel)
+        alert.addAction(action)
+        alert.addTextField{[weak self](textField) -> Void in
+            textField.text = self?.items[indexPath.row]
+        }
+        present(alert, animated: true, completion: nil)
+
+    }
+    
 }
 extension ViewController: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
